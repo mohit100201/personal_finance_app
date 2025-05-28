@@ -11,7 +11,7 @@ export interface TransactionDTO {
     userId: number;
 }
 
-interface transactionProps{
+export interface transactionProps{
     id: number;
     setTransaction: Dispatch<SetStateAction<TransactionDTO[]>>;
     income: number;
