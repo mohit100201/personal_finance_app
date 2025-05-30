@@ -1,4 +1,5 @@
 'use client';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import background from './../../../public/background.jpg';
@@ -49,8 +50,10 @@ const SignInUser = () => {
       const data= await response.json();
       console.log("data: ",data);
 
-      console.log("token: ",data.token);
+      console.log("tokenSignIn: ",data.token);
+      Cookies.set('token', data.token, { expires: 7 }); // expires in 7 days
       localStorage.setItem('token',data.token)
+      
       setSuccess("User Created!");
 
       router.push("/")

@@ -1,8 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { CategoryDTO } from "../api/category";
-import  {fetchAllCategories}  from "../api/category"; // Adjust the import path as necessary
-import { getUserId } from "../utils/getUserId";
+import React, {  useState ,useEffect} from "react";
+ 
+interface CategoryDTO {
+  id: number;
+  name: string;
+  type: string; // "income" or "expense"
+}
+
 
 interface TransactionProps {
   type: string;
@@ -20,11 +24,20 @@ const Transaction = (props: TransactionProps) => {
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
-  const [userId, setUserId] = useState<number | null>(null);
+  
+
+ 
 
   const fetchCategories = async (id:number) => {
     try{
-      const data:CategoryDTO[]=await fetchAllCategories(id);
+
+      const response = await fetch(`/api/fetchAllCategories/${id}`, {
+        method: 'GET',
+       
+      });
+
+      const data:CategoryDTO[] = await response.json();
+      
      const filterdata= data.filter(cat =>
   cat.type.toLowerCase() === props.type.toLowerCase()
 );
@@ -43,11 +56,10 @@ const Transaction = (props: TransactionProps) => {
 
   useEffect(() => {
       const initialize = async () => {
-        const id = await getUserId();
-        if (id !== null) {
-          setUserId(id);
-          fetchCategories(id);
-        }
+       
+          
+          fetchCategories(props.userId);
+        
       };
   
       initialize();
@@ -58,11 +70,10 @@ const Transaction = (props: TransactionProps) => {
   const createTransaction = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/transaction', {
-        method: "POST",
+      const response = await fetch('/api/createTransaction', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
           "title": description,

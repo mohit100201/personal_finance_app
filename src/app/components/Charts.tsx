@@ -1,6 +1,6 @@
 import React from 'react'
 import * as echarts from "echarts";
-import { TransactionDTO } from '../api/transaction';
+import { TransactionDTO } from '../utils/transaction';
 
 interface ChartsProps{
     theme:boolean;

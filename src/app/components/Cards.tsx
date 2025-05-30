@@ -3,7 +3,7 @@ import increase from "./../../../public/increase.png";
 import decrease from "./../../../public/decrease.png";
 import wallet from "./../../../public/wallet.png";
 import Image from "next/image";
-import AnimatedNumber from "./animatedNumber";
+import AnimatedNumber from './AnimatedNumber';
 interface CardsProps {
     theme: boolean;
     value:number;
